@@ -48,7 +48,6 @@ def save_info():
             "password": password
         }}
 
-
     if len(website) == 0 or len(password) == 0 or len(email) == 0:  ##checking for empty fields
         messagebox.showerror(title="Error", message="No empty fields")
     else:
