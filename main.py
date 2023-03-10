@@ -19,9 +19,9 @@ def generate_pass():
 
     # The below 3 lines of code uses list comprehension to replace cumbersome for loops
     # Remember: new_list = [the_action for item in list or range]
-    password_letters = [random.choice(letters) for char in range(random.randint(8, 10))]
-    password_symbols = [random.choice(symbols) for symbol in range(random.randint(2, 4))]
-    password_numbers = [random.choice(numbers) for number in range(random.randint(2, 4))]
+    password_letters = [random.choice(letters) for _ in range(random.randint(8, 10))]
+    password_symbols = [random.choice(symbols) for _ in range(random.randint(2, 4))]
+    password_numbers = [random.choice(numbers) for _ in range(random.randint(2, 4))]
 
     password_list = password_letters + password_symbols + password_numbers  # combines the lists into a single list
 
@@ -41,7 +41,6 @@ def save_info():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-    record = f"{website},{email},{password}\n"
     json_data = {
         website: {
             "email": email,
@@ -53,7 +52,7 @@ def save_info():
     else:
         try:
             with open("data.json", "r") as data_file:
-                #Reading old data
+                # Reading old data
                 data = json.load(data_file)
         except FileNotFoundError:
             with open("data.json", "a") as data_file:
@@ -62,17 +61,35 @@ def save_info():
             # Updating old data with new data
             data.update(json_data)
             with open("data.json", "w") as data_file:
-                #Saving updated data
-                json.dump(data, data_file, indent=2) #the .dump method "dumps" the data into a file.
+                # Saving updated data
+                json.dump(data, data_file, indent=2)  # the .dump method "dumps" the data into a file.
         finally:
             website_entry.delete(0, END)  # this clears or deletes the entries.
             email_entry.delete(0, END)
             password_entry.delete(0, END)
 
-# ---------------------------- Search --------------------------------- #
 
-def search():
-    pass
+# ---------------------------- FIND PASS -------------------------------- #
+
+def find_password():
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+            website = website_entry.get()
+            if len(website) == 0:
+                messagebox.showerror(title="Error", message="Please input a website.")
+            elif website in data:
+                email = data[website]["email"]
+                password = data[website]["password"]
+                messagebox.showinfo(title="Info found!", message=f"Email: {email}\n"
+                                                                 f"Password: {password}")
+            else:
+                messagebox.showerror(title="Record not found!",
+                                     message="Sorry, but no details for that website exists.")
+    except FileNotFoundError:
+        messagebox.showerror(title="File not found!",
+                             message="Sorry, but there is no data file. Please add a password to create a file.")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -92,14 +109,14 @@ website_entry = Entry(width=34)
 website_entry.grid(column=1, row=1, columnspan=1)
 website_entry.focus()
 
-search_button = Button(text="Search", command=search, width=14)
+search_button = Button(text="Search", command=find_password, width=14)
 search_button.grid(column=2, row=1)
 
 email_label = Label(text="Email/Username:", bg="WHITE")
 email_label.grid(column=0, row=2)
 
-email_entry = Entry(width=34)
-email_entry.grid(column=1, row=2, columnspan=1)
+email_entry = Entry(width=53)
+email_entry.grid(column=1, row=2, columnspan=2)
 email_entry.insert(0, "")  # automatically insert your email at the beginning.
 
 password_label = Label(text="Password:", bg="WHITE")
