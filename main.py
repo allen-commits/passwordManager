@@ -73,7 +73,7 @@ def save_info():
 
 def find_password():
     """Searches for password using the .loads method to convert to a dictionary and then matching the key.
-    It then prints results."""
+    It then prints results. If not, it throws an error."""
     try:
         with open("data.json", "r") as data_file:
             data = json.load(data_file)
