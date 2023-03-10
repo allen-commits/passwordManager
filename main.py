@@ -69,6 +69,10 @@ def save_info():
             email_entry.delete(0, END)
             password_entry.delete(0, END)
 
+# ---------------------------- Search --------------------------------- #
+
+def search():
+    pass
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -84,15 +88,18 @@ canvas.grid(column=1, row=0)
 website_label = Label(text="Website:", bg="WHITE")
 website_label.grid(column=0, row=1)
 
-website_entry = Entry(width=52)
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry = Entry(width=34)
+website_entry.grid(column=1, row=1, columnspan=1)
 website_entry.focus()
+
+search_button = Button(text="Search", command=search, width=14)
+search_button.grid(column=2, row=1)
 
 email_label = Label(text="Email/Username:", bg="WHITE")
 email_label.grid(column=0, row=2)
 
-email_entry = Entry(width=52)
-email_entry.grid(column=1, row=2, columnspan=2)
+email_entry = Entry(width=34)
+email_entry.grid(column=1, row=2, columnspan=1)
 email_entry.insert(0, "")  # automatically insert your email at the beginning.
 
 password_label = Label(text="Password:", bg="WHITE")
